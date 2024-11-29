@@ -6445,9 +6445,11 @@ class WebsocketAddon {
   }
 }
 class TerminalManager {
-  constructor() {
+  constructor(config) {
     __publicField(this, "terminals", /* @__PURE__ */ new Map());
     __publicField(this, "handleResizeBound");
+    __publicField(this, "config", /* @__PURE__ */ new Map());
+    this.config = new Map(Object.entries(config));
     this.handleResizeBound = this.handleResize.bind(this);
   }
   newEndpoint(path, elementId = "") {
@@ -6503,10 +6505,23 @@ class TerminalManager {
     };
   }
   getWSUrl(path) {
-    const scheme = "ws://";
-    const host = "127.0.0.1";
-    const port = "8034";
-    return new URL(`${scheme}${host}:${port}/${path}`);
+    const scheme = (
+      // Use VITE_TERMINAL_WEBSOCKET_SCHEME if it exists
+      this.config.get("WEBSOCKET_SCHEME") || // Use config.get('WEBSOCKET_SCHEME') if it exists
+      "http"
+    );
+    const websocketScheme = scheme === "https" ? "wss://" : "ws://";
+    const host = (
+      // Use VITE_TERMINAL_WEBSOCKET_SCHEME if it exists
+      this.config.get("WEBSOCKET_HOST") || // Use config.get('WEBSOCKET_SCHEME') if it exists
+      "127.0.0.1"
+    );
+    const port = (
+      // Use VITE_TERMINAL_WEBSOCKET_SCHEME if it exists
+      this.config.get("WEBSOCKET_PORT") || // Use config.get('WEBSOCKET_SCHEME') if it exists
+      "8034"
+    );
+    return new URL(`${websocketScheme}${host}:${port}/${path}`);
   }
 }
 export {

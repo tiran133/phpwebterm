@@ -6,8 +6,10 @@ import {WebsocketAddon} from './websocket-addon';
 export class TerminalManager {
     private terminals: Map<string, { term: Terminal; fitAddon: FitAddon }> = new Map();
     private readonly handleResizeBound: () => void;
+    private config: Map<string, string> = new Map();
 
-    constructor() {
+    constructor(config: {} = {}) {
+        this.config = new Map(Object.entries(config));
         this.handleResizeBound = this.handleResize.bind(this); // Bind once and store the reference
     }
 
@@ -78,12 +80,26 @@ export class TerminalManager {
     }
 
     private getWSUrl(path: string): URL {
-        const scheme =
-            import.meta.env.VITE_TERMINAL_WEBSOCKET_SCHEME === 'https' ? 'wss://' : 'ws://';
-        const host = import.meta.env.VITE_TERMINAL_WEBSOCKET_HOST || '127.0.0.1';
-        const port = import.meta.env.VITE_TERMINAL_WEBSOCKET_PORT || '8034';
 
-        return new URL(`${scheme}${host}:${port}/${path}`);
+        const scheme =
+            import.meta.env.VITE_TERMINAL_WEBSOCKET_SCHEME || // Use VITE_TERMINAL_WEBSOCKET_SCHEME if it exists
+            this.config.get('WEBSOCKET_SCHEME') || // Use config.get('WEBSOCKET_SCHEME') if it exists
+            'http'; // Fallback to 'http' if neither exist
+
+        // Compare and set the WebSocket URL scheme
+        const websocketScheme = scheme === 'https' ? 'wss://' : 'ws://';
+
+        const host =
+            import.meta.env.VITE_TERMINAL_WEBSOCKET_HOST || // Use VITE_TERMINAL_WEBSOCKET_SCHEME if it exists
+            this.config.get('WEBSOCKET_HOST') || // Use config.get('WEBSOCKET_SCHEME') if it exists
+            '127.0.0.1'; // Fallback to 'http' if neither exist
+
+        const port =
+            import.meta.env.VITE_TERMINAL_WEBSOCKET_PORT || // Use VITE_TERMINAL_WEBSOCKET_SCHEME if it exists
+            this.config.get('WEBSOCKET_PORT') || // Use config.get('WEBSOCKET_SCHEME') if it exists
+            '8034'; // Fallback to 'http' if neither exist
+
+        return new URL(`${websocketScheme}${host}:${port}/${path}`);
     }
 }
 

@@ -1,12 +1,18 @@
 import {TerminalManager} from '/../dist/TerminalManager.es.js';
 
+// If the config is not supplied, it will read the config from ENV variable during vite build process
+const config = {
+    WEBSOCKET_SCHEME: 'http',
+    WEBSOCKET_HOST: '127.0.0.1',
+    WEBSOCKET_PORT: '8034',
+}
+
 // Instantiate and expose the manager
-const terminalManager = new TerminalManager();
+const terminalManager = new TerminalManager(config);
 
 window.connectServerShell = terminalManager.newEndpoint('server-shell');
 window.connectDockerShell = terminalManager.newEndpoint('docker-shell');
 window.connectDockerLogs = terminalManager.newEndpoint('docker-logs');
-
 
 // Opens a shell to a server
 

@@ -44,6 +44,13 @@ $websocketServe->start();
 ```js
 import {TerminalManager} from '/../dist/TerminalManager.es.js';
 
+// If the config is not supplied, it will read the config from ENV variable during vite build process
+const config = {
+    WEBSOCKET_SCHEME: 'http',
+    WEBSOCKET_HOST: '127.0.0.1',
+    WEBSOCKET_PORT: '8034',
+}
+
 // Instantiate and expose the manager
 const terminalManager = new TerminalManager();
 
