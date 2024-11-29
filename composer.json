@@ -1,0 +1,40 @@
+{
+  "name": "tiran133/phpwebterm",
+  "description": "Simple PHP Web Terminal for Server and Docker",
+  "require": {
+    "ext-pcntl": "*",
+    "ext-posix": "*",
+    "php": "^8.0",
+    "guzzlehttp/guzzle": "^7.9",
+    "illuminate/collections": "10.0|^11.0",
+    "ratchet/rfc6455": "^0.3.1",
+    "react/child-process": "^0.6.5",
+    "react/event-loop": "^1.5",
+    "react/socket": "^1.16",
+    "illuminate/support": "^11.34"
+  },
+  "homepage": "https://github.com/tiran133/phpwebterm",
+  "license": "MIT",
+  "autoload": {
+    "psr-4": {
+      "Phpwebterm\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "Alexander Wolff",
+      "email": "contact@alexwolff.biz"
+    }
+  ],
+  "minimum-stability": "stable",
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Phpwebterm\\PhpWebtermServiceProvider"
+      ],
+      "aliases": {
+        "Phpwebterm": "Phpwebterm\\Support\\Phpwebterm"
+      }
+    }
+  }
+}
