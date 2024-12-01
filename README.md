@@ -52,7 +52,7 @@ const config = {
 }
 
 // Instantiate and expose the manager
-const terminalManager = new TerminalManager();
+const terminalManager = new TerminalManager(config);
 
 window.connectServerShell = terminalManager.newEndpoint('server-shell');
 
